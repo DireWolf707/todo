@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{todo}}
+<a href="{% url 'update_view' todo.pk %}">Update</a>
+{% endblock content %}

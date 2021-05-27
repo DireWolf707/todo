@@ -1,7 +1,8 @@
-from django.views.generic import CreateView,ListView
+from django.views.generic import CreateView,ListView,DetailView,UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Todo
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 
 class TodoCreateView(LoginRequiredMixin,CreateView):
     model = Todo
@@ -20,4 +21,12 @@ class TodoCurrentView(LoginRequiredMixin,ListView):
     def get_queryset(self):
         return Todo.objects.filter(user=self.request.user,date_completed__isnull=True)
     
-    
+class TodoDetailview(LoginRequiredMixin,DetailView):
+    model = Todo
+    context_object_name = 'todo'
+    template_name = 'detail_view.html'  
+
+class TodoUpdateview(LoginRequiredMixin,UpdateView):
+    model = Todo
+    template_name = 'update_view.html'  
+    fields = ('title','memo','important',)

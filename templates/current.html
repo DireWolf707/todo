@@ -5,9 +5,9 @@
 {% for todo in todos %}
 
 {% if todo.important %}
-<li><b>{{todo.title}}</b></li>
+<li><b><a href="{% url 'detail_view' todo.pk %}">{{todo.title}}</a></b></li>
 {% else %}
-<li>{{todo.title}}</li>
+<li><a href="{% url 'detail_view' todo.pk %}">{{todo.title}}</a></li>
 {% endif %}
 
 {% if todo.memo %}
