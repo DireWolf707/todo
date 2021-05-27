@@ -11,6 +11,17 @@
     <title>Todo</title>
   </head>
   <body>
+  {% if user.is_authenticated %}
+  hello {{user.username}}
+  {% else %}
+  plz login
+  {% endif %}
+  <a href={% url 'login' %}>login</a>
+  <a href={% url 'signup' %}>sign up</a>
+  <a href={% url 'logout' %}>logout</a>
+  <a href={% url 'create' %}>create</a>
+  <a href={% url 'current' %}>current</a>
+  <br><br>
     {% block content %}
     
     {% endblock content %}
