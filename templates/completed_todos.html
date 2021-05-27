@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<ul>
+{% for todo in todos %}
+<li>{{todo.title}}</li>
+{{todo.date_completed}}
+<form method="post" action="{% url 'delete' todo.id %}">
+{% csrf_token %}
+<button type="submit" class="btn btn-success my-3">Delete</button>
+</form>
+{% empty %}
+No Todos Completed...
+{% endfor %}
+</ul>
+
+{% endblock content %}

@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from .models import Todo
 from django.shortcuts import redirect,get_object_or_404
 from django.utils import timezone
+from django.http import Http404
 
 class TodoCreateView(LoginRequiredMixin,CreateView):
     model = Todo
@@ -41,4 +42,11 @@ class todo_delete(LoginRequiredMixin,View):
     def post(self, request, *args, **kwargs):
         todo = get_object_or_404(Todo,pk=kwargs['pk'],user=request.user)
         todo.delete()
-        return redirect("current")
+        return redirect("completed_todos")
+    
+class TodoCompleteView(LoginRequiredMixin,ListView):
+    context_object_name = 'todos'
+    template_name = 'completed_todos.html'
+    
+    def get_queryset(self):
+        return Todo.objects.filter(user=self.request.user,date_completed__isnull=False).order_by('-date_completed')
