@@ -14,7 +14,7 @@ class Todo(models.Model):
         return self.title
     
     def get_absolute_url(self):
-        return reverse("detail_view", kwargs={"pk": self.pk})
+        return reverse("current")
     
     
     

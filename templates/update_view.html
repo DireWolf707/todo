@@ -9,5 +9,15 @@
 {{form|crispy}}
 <button type="submit" class="btn btn-success my-3">Update</button>
 </form>
+
+<form method="post" action="{% url 'complete' object.id %}">
+{% csrf_token %}
+<button type="submit" class="btn btn-success my-3">Completed</button>
+</form>
+
+<form method="post" action="{% url 'delete' object.id %}">
+{% csrf_token %}
+<button type="submit" class="btn btn-success my-3">Delete</button>
+</form>
 </div>
 {% endblock content %}
