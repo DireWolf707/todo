@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from .models import Todo
 from django.shortcuts import redirect,get_object_or_404
 from django.utils import timezone
-from django.http import Http404
 
 class TodoCreateView(LoginRequiredMixin,CreateView):
     model = Todo
@@ -29,7 +28,7 @@ class TodoUpdateview(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     
     def test_func(self):
         obj = self.get_object()
-        return obj.user == self.request.user
+        return obj.user == self.request.user and obj.date_completed is None
     
 class todo_complete(LoginRequiredMixin,View):
     def post(self, request, *args, **kwargs):
