@@ -1,5 +1,6 @@
 from django.views.generic import CreateView,ListView,UpdateView,View
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
+from django.views.generic.detail import SingleObjectMixin
 from .models import Todo
 from django.shortcuts import redirect,get_object_or_404
 from django.utils import timezone
@@ -41,14 +42,14 @@ class TodoUpdateview(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     
 class todo_complete(LoginRequiredMixin,UserPassesTestMixin,View):
     def post(self, request, *args, **kwargs):
-        todo = get_object_or_404(Todo,pk=kwargs['pk'],user=request.user)
+        todo = self.object
         todo.date_completed = timezone.now()
         todo.save()
         return redirect("current")
     
     def test_func(self):
-        obj = self.get_object()
-        return obj.date_completed is None
+        self.object = get_object_or_404(Todo,user=self.request.user,pk=self.kwargs.get('pk'))
+        return self.object.date_completed is None
     
 
 class todo_delete(LoginRequiredMixin,View):
