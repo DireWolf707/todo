@@ -11,18 +11,45 @@
     <title>Todo</title>
   </head>
   <body>
-  {% if user.is_authenticated %}
-  hello {{user.username}}
-  {% else %}
-  plz login
-  {% endif %}
-  <a href={% url 'login' %}>login</a>
-  <a href={% url 'signup' %}>sign up</a>
-  <a href={% url 'logout' %}>logout</a>
-  <a href={% url 'create' %}>create</a>
-  <a href={% url 'current' %}>current</a>
-  <a href={% url 'completed_todos' %}>completed</a>
-  <br><br>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mx-3 rounded-bottom">
+  <div class="container-fluid border-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+          {% if user.is_authenticated %}
+          <span class="navbar-text fs-6" >
+          Hi {{user.username}}
+          </span>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'create' %}">Add a New Todo</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'current' %}">See Current Todos</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'completed_todos' %}">See Completed Todos</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'signup' %}">Sign Up</a>
+          </li>
+          {% endif %}
+      </ul>
+        
+      
+    </div>
+  </div>
+</nav>
     {% block content %}
     
     {% endblock content %}

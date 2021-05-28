@@ -4,7 +4,7 @@ from django.urls import reverse
 
 class Todo(models.Model):
     title = models.CharField(max_length=60)
-    memo = models.TextField(blank=True)
+    description = models.TextField(blank=True)
     created = models.DateField(auto_now_add=True)
     date_completed = models.DateTimeField(null=True,blank=True)
     important = models.BooleanField(default=False)
