@@ -39,12 +39,17 @@ class TodoUpdateview(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
         obj = self.get_object()
         return obj.user == self.request.user and obj.date_completed is None
     
-class todo_complete(LoginRequiredMixin,View):
+class todo_complete(LoginRequiredMixin,UserPassesTestMixin,View):
     def post(self, request, *args, **kwargs):
         todo = get_object_or_404(Todo,pk=kwargs['pk'],user=request.user)
         todo.date_completed = timezone.now()
         todo.save()
         return redirect("current")
+    
+    def test_func(self):
+        obj = self.get_object()
+        return obj.date_completed is None
+    
 
 class todo_delete(LoginRequiredMixin,View):
     def post(self, request, *args, **kwargs):
