@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+{% endif %}
+
 <ul>
 {% for todo in todos %}
 

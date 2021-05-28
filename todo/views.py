@@ -3,16 +3,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from .models import Todo
 from django.shortcuts import redirect,get_object_or_404
 from django.utils import timezone
+from .forms import TodoForm
+from django.contrib import messages
 
 class TodoCreateView(LoginRequiredMixin,CreateView):
-    model = Todo
     template_name = 'create.html'
-    fields =('title','memo','important',)
+    form_class = TodoForm
     
     def form_valid(self, form):
         form.instance.user = self.request.user
         self.object = form.save()
-        return redirect("current")
+        success_message = "Todo added successfully"
+        messages.success(self.request, success_message)
+        return redirect('current')
 
 class TodoCurrentView(LoginRequiredMixin,ListView): 
     context_object_name = 'todos'
@@ -24,7 +27,13 @@ class TodoCurrentView(LoginRequiredMixin,ListView):
 class TodoUpdateview(LoginRequiredMixin,UserPassesTestMixin,UpdateView):
     model = Todo
     template_name = 'update_view.html'  
-    fields = ('title','memo','important',)
+    form_class = TodoForm
+    
+    def form_valid(self, form):
+        self.object = form.save()
+        success_message = "Todo updated successfully"
+        messages.warning(self.request, success_message)
+        return redirect('current')
     
     def test_func(self):
         obj = self.get_object()
@@ -41,6 +50,8 @@ class todo_delete(LoginRequiredMixin,View):
     def post(self, request, *args, **kwargs):
         todo = get_object_or_404(Todo,pk=kwargs['pk'],user=request.user)
         todo.delete()
+        success_message = "Todo deleted successfully"
+        messages.error(request, success_message)
         return redirect("completed_todos")
     
 class TodoCompleteView(LoginRequiredMixin,ListView):
